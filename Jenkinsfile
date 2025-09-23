@@ -2,34 +2,36 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-               git branch: 'main', url: 'https://github.com/rajendra-pm/simple-jenkins-pipeline.git'
-            }
-        }
-
         stage('Build') {
             steps {
-                script {
-                    sh 'docker build -t simple-jenkins-app .'
-                }
+                echo 'Building the Application...'
+                sh 'docker build -t myapp:latest .'
             }
         }
 
         stage('Test') {
             steps {
-                script {
-                    sh 'echo "Running tests (you can add pytest/unittest here)"'
-                }
+                echo 'Running Tests...'
+                // Example: run tests if available
+                sh 'echo "No tests yet!"'
             }
         }
 
         stage('Deploy') {
             steps {
-                script {
-                    sh 'docker run -d -p 5000:5000 --name simple-jenkins-container simple-jenkins-app'
-                }
+                echo 'Deploying Application...'
+                // Run Docker container (simulate deploy)
+                sh 'docker run -d -p 3000:3000 --name myapp_container myapp:latest || true'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
