@@ -1,6 +1,5 @@
-FROM python:3.9-slim
+FROM node:14
 WORKDIR /app
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
 COPY . .
-CMD ["python", "app.py"]
+CMD ["node", "app.js"]
+
