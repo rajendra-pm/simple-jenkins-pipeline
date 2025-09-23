@@ -1,13 +1,22 @@
 pipeline {
     agent any
 
+    environment {
+        APP_NAME = 'myapp'
+        IMAGE_TAG = 'latest'
+        GIT_URL = 'https://github.com/rajendra-pm/simple-jenkins-pipeline.git'
+        BRANCH = 'main'
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                // Use the more robust checkout syntax
+                echo 'Checking out Git repository...'
                 checkout([$class: 'GitSCM',
-                          branches: [[name: '*/main']],
-                          userRemoteConfigs: [[url: 'https://github.com/rajendra-pm/simple-jenkins-pipeline.git']]
+                          branches: [[name: "${BRANCH}"]],
+                          doGenerateSubmoduleConfigurations: false,
+                          extensions: [[$class: 'CleanCheckout']],
+                          userRemoteConfigs: [[url: "${GIT_URL}"]]
                 ])
             }
         }
@@ -15,13 +24,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Docker image...'
-                sh 'docker build -t myapp:latest .'
+                sh "docker build -t ${APP_NAME}:${IMAGE_TAG} ."
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running Tests...'
+                echo 'Running tests...'
+                // Replace with real test command if available
                 sh 'echo "Tests Passed!"'
             }
         }
@@ -29,8 +39,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying Application...'
-                sh 'docker rm -f myapp || true'   // remove previous container if exists
-                sh 'docker run -d --name myapp -p 3000:3000 myapp:latest'
+                // Stop and remove previous container if exists
+                sh "docker stop ${APP_NAME} || true"
+                sh "docker rm ${APP_NAME} || true"
+                // Run new container
+                sh "docker run -d --name ${APP_NAME} -p 3000:3000 ${APP_NAME}:${IMAGE_TAG}"
             }
         }
     }
@@ -38,6 +51,9 @@ pipeline {
     post {
         always {
             echo 'Pipeline finished!'
+        }
+        success {
+            echo 'Pipeline succeeded!'
         }
         failure {
             echo 'Pipeline failed!'
