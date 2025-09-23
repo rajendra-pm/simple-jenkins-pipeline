@@ -4,17 +4,17 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the Application...'
-                bat 'docker build -t myapp:latest .'
+                sh 'docker build -t myapp:latest .'
             }
         }
         stage('Test') {
             steps {
-                echo 'Test stage (if any)...'
+                echo 'Test stage...'
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploy stage (if any)...'
+                echo 'Deploy stage...'
             }
         }
     }
