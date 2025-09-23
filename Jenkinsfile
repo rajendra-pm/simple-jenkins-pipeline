@@ -4,14 +4,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-username/simple-jenkins-pipeline.git'
+                git 'https://github.com/rajendra-pm/simple-jenkins-pipeline.git'
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Building Docker image...'
-                sh 'docker build -t myapp:latest ./app'
+                sh 'docker build -t myapp:latest .'
             }
         }
 
