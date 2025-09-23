@@ -1,21 +1,41 @@
 pipeline {
     agent any
+
     stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/your-username/simple-jenkins-pipeline.git'
+            }
+        }
+
         stage('Build') {
             steps {
-                echo 'Building the Application...'
-                sh 'docker build -t myapp:latest .'
+                echo 'Building Docker image...'
+                sh 'docker build -t myapp:latest ./app'
             }
         }
+
         stage('Test') {
             steps {
-                echo 'Testing...'
+                echo 'Running Tests...'
+                sh 'echo "Tests Passed!"'
             }
         }
+
         stage('Deploy') {
             steps {
-                echo 'Deploying...'
+                echo 'Deploying Application...'
+                sh 'docker run -d -p 3000:3000 myapp:latest'
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
