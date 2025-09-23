@@ -9,18 +9,13 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Test stage...'
+                echo 'Testing...'
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploy stage...'
+                echo 'Deploying...'
             }
-        }
-    }
-    post {
-        always {
-            echo 'Pipeline finished!'
         }
     }
 }
