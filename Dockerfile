@@ -1,14 +1,18 @@
-# Use Node.js base image
+# Use Node.js image
 FROM node:18
 
-# Create app directory
+# Set working directory
 WORKDIR /usr/src/app
 
-# Copy files
-COPY index.js .
+# Copy package.json and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy app code
+COPY . .
 
 # Expose port
 EXPOSE 3000
 
-# Run app
-CMD ["node", "index.js"]
+# Run the app
+CMD ["npm", "start"]
