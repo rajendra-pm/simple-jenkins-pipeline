@@ -21,8 +21,7 @@ This project demonstrates a **basic Jenkins CI/CD pipeline** that:
 
 ---
 
-## 🖼️ Screenshots
-(Add Jenkins pipeline run screenshots, DockerHub image, or app running in browser)
+
 
 ---
 
